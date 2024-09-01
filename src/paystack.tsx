@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { useState, useEffect, forwardRef, useRef, useImperativeHandle } from 'react';
-import { Modal, View, ActivityIndicator, SafeAreaView } from 'react-native';
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { ActivityIndicator, Modal, SafeAreaView, View } from 'react-native';
 import { WebView, WebViewNavigation } from 'react-native-webview';
 import { getAmountValueInKobo, getChannels } from './helper';
-import { PayStackProps, PayStackRef } from './types';
+import { PayStackProps } from './types';
 
 const CLOSE_URL = 'https://standard.paystack.co/close';
 
@@ -25,6 +25,7 @@ const Paystack: React.ForwardRefRenderFunction<React.ReactNode, PayStackProps> =
     autoStart = false,
     onSuccess,
     activityIndicatorColor = 'green',
+    metadata,
   },
   ref,
 ) => {
@@ -81,14 +82,7 @@ const Paystack: React.ForwardRefRenderFunction<React.ReactNode, PayStackProps> =
                 ${getChannels(channels)}
                 ${refNumberString}
                 ${subAccountString}
-                metadata: {
-                custom_fields: [
-                        {
-                        display_name:  '${firstName + ' ' + lastName}',
-                        variable_name:  '${billingName}',
-                        value:''
-                        }
-                ]},
+                metadata: ${JSON.stringify(metadata)},
                 onSuccess: function(response){
                       var resp = {event:'successful', transactionRef:response};
                         window.ReactNativeWebView.postMessage(JSON.stringify(resp))
