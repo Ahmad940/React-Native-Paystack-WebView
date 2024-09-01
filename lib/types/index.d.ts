@@ -16,6 +16,7 @@ export interface PayStackProps {
     phone?: string | number;
     amount: string | number;
     currency?: Currency;
+    metadata?: object;
     channels?: PaymentChannels[];
     refNumber?: string;
     billingName?: string;
